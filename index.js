@@ -1,17 +1,17 @@
 const prompt = require('prompt-sync') ()
-const listarResidencias = require('./listar')
-const adicionarResidencias = require('./adicionar')
-const atualizarResidencias = require('./atualizar')
-const removerResidencias = require('./remover')
+const listarContatos = require('./listar')
+const adicionarContato = require('./adicionar')
+const atualizarContato = require('./atualizar')
+const removerContato = require('./remover')
 
 exibirMenu()
 
 function exibirMenu() {
     console.log(`
-    1. Listar Residências
-    2. Adicionar Residência
-    3. Atualizar Residência
-    4. Remover Residência
+    1. Listar Contatos
+    2. Adicionar Contato
+    3. Atualizar Contato
+    4. Remover Contato
     5. Sair
     `)
 const opcao = prompt('Escolha uma opção: ')
@@ -19,34 +19,40 @@ let index
 
     switch (opcao) {
         case '1':
-            listarResidencias()
+            listarContatos()
             exibirMenu()
             break
         case '2':
-            const bairro = prompt('Bairro: ')
-            const rua = prompt('Rua: ')
-            const numero = parseInt(prompt('Número: '))
-            const moradores = prompt('Moradores: ')
-            adicionarResidencias({bairro,rua,numero,moradores})
-            console.log('Residência salva com sucesso.')
+            const nome = prompt('Nome: ')
+            let telefones = []
+            let telefone
+            while ((telefone = prompt('Telefone(ou deixe em branco para sair): '))) {
+                telefones.push(telefone)
+            }
+            const email = prompt('Email: ')
+            adicionarContato({nome,telefones,email})
+            console.log('Contato salvo com sucesso.')
             exibirMenu()
             break
         case '3':
-            listarResidencias()
-            index = parseInt(prompt('Escolha o número da residência que deseja atualizar: ')) -1
-            const novoBairro = prompt('Novo bairro: ')
-            const novaRua = prompt('Nova rua: ')
-            const novoNumero = parseInt(prompt('Novo número: '))
-            const novosMoradores = prompt('Novos moradores: ')
-            atualizarResidencias(index, {bairro: novoBairro, rua: novaRua, numero: novoNumero, moradores: novosMoradores})
-            console.log('Residência atualizada com sucesso.')
+            listarContatos()
+            id = parseInt(prompt('Escolha o id contato que deseja atualizar: '))
+            const novoNome = prompt('Novo nome: ')
+            let novosTelefones = []
+            let novoTelefone
+            while ((novoTelefone = prompt('Novo telefones(ou deixe em branco para sair): '))) {
+                novosTelefones.push(novoTelefone)
+            }
+            const novoEmail = prompt('Nova email: ')
+            atualizarContato(id, {nome: novoNome, email: novoEmail, telefones: novosTelefones})
+            console.log('Contato atualizado com sucesso.')
             exibirMenu()
             break
         case '4':
-            listarResidencias()
-            index = parseInt(prompt('Escolha o número da residência que deseja remover: ')) -1
-            removerResidencias(index)
-            console.log('Residência removida com sucesso.')
+            listarContatos()
+            id = parseInt(prompt('Escolha o id do contato que deseja remover: ')) -1
+            confirmarcao = prompt('Você deseja remover esse contato: s/n: ')
+            removerContato(id, confirmarcao)
             exibirMenu()
             break
         case '5':
